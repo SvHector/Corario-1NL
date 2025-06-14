@@ -3,17 +3,20 @@ import { db } from "./firebase-config.js";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const contenedor = document.getElementById("listadoCanciones");
+const buscador = document.getElementById("buscador");
+const filtroFavoritas = document.getElementById("filtroFavoritas");
 
-// Detectar entrada en buscador (opcional para futuro)
 let canciones = [];
 
-function renderizarCanciones(filtro = "") {
+function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
   contenedor.innerHTML = "";
 
   canciones.forEach((cancion) => {
-    const coincide = cancion.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
-                     cancion.letra.toLowerCase().includes(filtro.toLowerCase());
-    if (coincide || filtro === "") {
+    const coincideTexto = cancion.titulo.toLowerCase().includes(filtroTexto.toLowerCase()) ||
+                          cancion.letra.toLowerCase().includes(filtroTexto.toLowerCase());
+    const coincideFavorita = !soloFavoritas || cancion.favorita;
+
+    if ((coincideTexto || filtroTexto === "") && coincideFavorita) {
       const card = document.createElement("div");
       card.className = "col-md-4 mb-4";
 
@@ -25,7 +28,7 @@ function renderizarCanciones(filtro = "") {
               <p><em>${cancion.genero}</em></p>
               <p><small>Autor: ${cancion.autor}</small></p>
               <span class="badge bg-${cancion.favorita ? "warning text-dark" : "secondary"}">
-                ${cancion.favorita ? "★ Favorita" : "☆ Marcar"}
+                ${cancion.favorita ? "★ Favorita" : "☆"}
               </span>
             </div>
             <div class="flip-card-back p-3 bg-light text-dark rounded">
@@ -49,4 +52,12 @@ onValue(cancionesRef, (snapshot) => {
     canciones.push(child.val());
   });
   renderizarCanciones();
+});
+
+// Eventos de filtro
+buscador.addEventListener("input", () => {
+  renderizarCanciones(buscador.value, filtroFavoritas.checked);
+});
+filtroFavoritas.addEventListener("change", () => {
+  renderizarCanciones(buscador.value, filtroFavoritas.checked);
 });

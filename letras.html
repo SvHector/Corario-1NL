@@ -9,9 +9,20 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="container mt-5">
-    <h1 class="text-center">Canciones</h1>
-    <div id="listadoCanciones" class="row mt-4">
+  <div class="container mt-4">
+    <h1 class="text-center">Corario 1NL</h1>
+    <div class="row my-4">
+      <div class="col-md-8">
+        <input type="text" id="buscador" class="form-control" placeholder="Buscar por título o letra...">
+      </div>
+      <div class="col-md-4 text-end">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="filtroFavoritas">
+          <label class="form-check-label" for="filtroFavoritas">Solo favoritas</label>
+        </div>
+      </div>
+    </div>
+    <div id="listadoCanciones" class="row">
       <!-- Aquí se cargará el listado desde Firebase -->
     </div>
   </div>
