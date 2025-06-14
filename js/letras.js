@@ -19,30 +19,27 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
 
     if ((coincideTexto || filtroTexto === "") && coincideFavorita) {
       const card = document.createElement("div");
-      card.className = "col-md-12 mb-3";
+      card.className = "col-12 mb-3";
 
       const id = ids[index];
       const letraID = "letra-" + id;
 
       card.innerHTML = `
-        <div class="card">
+        <div class="card bg-dark text-white border-light rounded" style="cursor: pointer;" data-id="${letraID}">
           <div class="card-body">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h5 class="card-title mb-1">${cancion.titulo}</h5>
                 <p class="mb-0"><em>${cancion.genero}</em></p>
                 <p class="mb-0"><small>Autor: ${cancion.autor}</small></p>
               </div>
-              <div>
-                <span class="badge bg-${cancion.favorita ? "warning text-dark" : "secondary"} pointer favorito-badge" data-id="${id}" style="font-size: 20px;">
+              <div class="text-end">
+                <span class="badge bg-${cancion.favorita ? "warning text-dark" : "secondary"} favorito-badge" data-id="${id}" style="font-size: 20px; cursor:pointer;">
                   ${cancion.favorita ? "★" : "☆"}
-                </span>
+                </span><br>
+                <a href="agregar.html?id=${id}" class="btn btn-sm btn-outline-light mt-2">Editar</a>
+                <button class="btn btn-sm btn-outline-danger eliminar-btn mt-2" data-id="${id}">Eliminar</button>
               </div>
-            </div>
-            <div class="mt-2">
-              <button class="btn btn-sm btn-outline-primary toggleLetra" data-id="${letraID}">Ver Letra</button>
-              <a href="agregar.html?id=${id}" class="btn btn-sm btn-secondary">Editar</a>
-              <button class="btn btn-sm btn-danger eliminar-btn" data-id="${id}">Eliminar</button>
             </div>
             <div class="collapse mt-3" id="${letraID}">
               <p class="mb-2">${cancion.letra.replaceAll("\n", "<br>")}</p>
@@ -55,6 +52,7 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
     }
   });
 
+  // Clic en estrella
   document.querySelectorAll(".favorito-badge").forEach(span => {
     span.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -64,8 +62,10 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
     });
   });
 
+  // Eliminar
   document.querySelectorAll(".eliminar-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const id = btn.getAttribute("data-id");
       if (confirm("¿Estás seguro de eliminar esta canción?")) {
         remove(ref(db, "canciones/" + id));
@@ -73,12 +73,13 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
     });
   });
 
-  document.querySelectorAll(".toggleLetra").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = document.getElementById(btn.getAttribute("data-id"));
+  // Expansión con clic en tarjeta
+  document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("click", () => {
+      const letraID = card.getAttribute("data-id");
+      const target = document.getElementById(letraID);
       if (target) {
         target.classList.toggle("show");
-        btn.textContent = target.classList.contains("show") ? "Ocultar Letra" : "Ver Letra";
       }
     });
   });
