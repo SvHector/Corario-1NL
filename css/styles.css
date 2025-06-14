@@ -44,3 +44,23 @@ video {
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+@media (min-width: 768px) {
+  #introVideo,
+  #loadingVideo {
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 767px) {
+  #introVideo,
+  #loadingVideo {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+}
