@@ -81,7 +81,7 @@ corario-1nl/
 
 ## 💬 Créditos
 
-Desarrollado por [Tu Nombre] para la comunidad cristiana.  
+Desarrollado por [Tu Nombre] con el apoyo técnico y creativo de **ChatGPT**, como asistente de desarrollo y diseño visual para la comunidad cristiana.  
 Inspirado en la necesidad de tener una herramienta moderna para alabanza, adoración y servicio 🙌
 
 ---
