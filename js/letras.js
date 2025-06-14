@@ -35,10 +35,10 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
               </div>
               <div class="text-end">
                 <span class="badge bg-${cancion.favorita ? "warning text-dark" : "secondary"} favorito-badge" data-id="${id}" style="font-size: 20px; cursor:pointer;">
-                  ${cancion.favorita ? "⭐" : "☆"}
+                  ${cancion.favorita ? "★" : "☆"}
                 </span><br>
-                <a href="agregar.html?id=${id}" class="btn btn-sm btn-outline-light mt-2">Editar</a>
-                <button class="btn btn-sm btn-outline-danger eliminar-btn mt-2" data-id="${id}">Eliminar</button>
+                <a href="agregar.html?id=${id}" class="btn btn-sm btn-outline-light mt-2"><span title="Editar">✏️</span></a>
+                <button class="btn btn-sm btn-outline-danger eliminar-btn mt-2" data-id="${id}"><span title="Eliminar">🗑️</span></button>
               </div>
             </div>
             <div class="collapse mt-3" id="${letraID}">
