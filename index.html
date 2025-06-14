@@ -13,10 +13,20 @@
     <video autoplay muted playsinline id="introVideo">
       <source src="assets/videos/Bienvenido.mp4" type="video/mp4">
     </video>
+    <video muted playsinline id="loadingVideo" style="display:none;">
+      <source src="assets/videos/Pantalla-Carga.mp4" type="video/mp4">
+    </video>
   </div>
   <script>
-    const video = document.getElementById("introVideo");
-    video.onended = function () {
+    const intro = document.getElementById("introVideo");
+    const loading = document.getElementById("loadingVideo");
+
+    intro.onended = function () {
+      intro.style.display = "none";
+      loading.style.display = "block";
+      loading.play();
+    };
+    loading.onended = function () {
       window.location.href = "letras.html";
     };
   </script>
