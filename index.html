@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Corario 1NL</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="video-container">
+    <video autoplay muted playsinline id="introVideo">
+      <source src="assets/videos/Bienvenido.mp4" type="video/mp4">
+    </video>
+  </div>
+  <script>
+    const video = document.getElementById("introVideo");
+    video.onended = function () {
+      window.location.href = "letras.html";
+    };
+  </script>
+</body>
+</html>
