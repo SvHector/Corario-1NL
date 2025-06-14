@@ -19,27 +19,34 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
 
     if ((coincideTexto || filtroTexto === "") && coincideFavorita) {
       const card = document.createElement("div");
-      card.className = "col-md-4 mb-4";
+      card.className = "col-md-12 mb-3";
+
+      const id = ids[index];
+      const letraID = "letra-" + id;
 
       card.innerHTML = `
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front p-3 bg-dark text-white rounded position-relative">
-              <h5>${cancion.titulo}</h5>
-              <p><em>${cancion.genero}</em></p>
-              <p><small>Autor: ${cancion.autor}</small></p>
-              <span class="badge position-absolute top-0 end-0 m-2 bg-${cancion.favorita ? "warning text-dark" : "secondary"} pointer favorito-badge" data-id="${ids[index]}">
-                ${cancion.favorita ? "★" : "☆"}
-              </span>
-              <div class="mt-3">
-                <a href="agregar.html?id=${ids[index]}" class="btn btn-sm btn-light">Editar</a>
-                <button class="btn btn-sm btn-danger eliminar-btn" data-id="${ids[index]}">Eliminar</button>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div>
+                <h5 class="card-title mb-1">${cancion.titulo}</h5>
+                <p class="mb-0"><em>${cancion.genero}</em></p>
+                <p class="mb-0"><small>Autor: ${cancion.autor}</small></p>
+              </div>
+              <div>
+                <span class="badge bg-${cancion.favorita ? "warning text-dark" : "secondary"} pointer favorito-badge" data-id="${id}" style="font-size: 20px;">
+                  ${cancion.favorita ? "★" : "☆"}
+                </span>
               </div>
             </div>
-            <div class="flip-card-back p-3 bg-light text-dark rounded">
-              <p>${cancion.letra.replaceAll("\n", "<br>")}</p>
-              <hr>
-              <p><strong>Notas:</strong> ${cancion.notas}</p>
+            <div class="mt-2">
+              <button class="btn btn-sm btn-outline-primary toggleLetra" data-id="${letraID}">Ver Letra</button>
+              <a href="agregar.html?id=${id}" class="btn btn-sm btn-secondary">Editar</a>
+              <button class="btn btn-sm btn-danger eliminar-btn" data-id="${id}">Eliminar</button>
+            </div>
+            <div class="collapse mt-3" id="${letraID}">
+              <p class="mb-2">${cancion.letra.replaceAll("\n", "<br>")}</p>
+              <p class="mb-0"><strong>Notas:</strong> ${cancion.notas}</p>
             </div>
           </div>
         </div>
@@ -48,22 +55,30 @@ function renderizarCanciones(filtroTexto = "", soloFavoritas = false) {
     }
   });
 
-  // Activar clic para estrella de favorito
   document.querySelectorAll(".favorito-badge").forEach(span => {
     span.addEventListener("click", (e) => {
-      e.stopPropagation(); // prevenir efecto flip
+      e.stopPropagation();
       const id = span.getAttribute("data-id");
       const nuevaFav = span.textContent.trim() === "☆";
       update(ref(db, "canciones/" + id), { favorita: nuevaFav });
     });
   });
 
-  // Activar botón de eliminar
   document.querySelectorAll(".eliminar-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.getAttribute("data-id");
       if (confirm("¿Estás seguro de eliminar esta canción?")) {
         remove(ref(db, "canciones/" + id));
+      }
+    });
+  });
+
+  document.querySelectorAll(".toggleLetra").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.getAttribute("data-id"));
+      if (target) {
+        target.classList.toggle("show");
+        btn.textContent = target.classList.contains("show") ? "Ocultar Letra" : "Ver Letra";
       }
     });
   });
